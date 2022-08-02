@@ -1,0 +1,46 @@
+@tailwind components;
+
+@layer components {
+  .link {
+    @apply hover:text-red-400 hover:text-lg;
+  }
+
+  .action__btn {
+    @apply px-4 py-2 min-w-max border rounded-full hover:shadow-lg active:scale-95 transition transform duration-100 ease-out cursor-pointer;
+  }
+
+  .tabs__panel {
+    @apply inline-block cursor-pointer px-4 rounded-lg hover:text-gray-900 hover:bg-gray-100 py-3;
+  }
+
+  .form__input {
+    @apply appearance-none block w-full bg-gray-200 text-gray-700 border rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white;
+  }
+
+  .form__error {
+    @apply text-red-500 text-xs italic;
+  }
+
+  .form__label {
+    @apply block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2;
+  }
+
+  .form__button {
+    @apply bg-[#00FFA4] text-white font-bold py-2 px-4 rounded  hover:animate-bounce duration-100;
+  }
+
+  .button__effect {
+    @apply hover:-translate-y-0.5
+    hover:scale-95
+    hover:animate-pulse;
+  }
+}
+
+.stroke {
+  -webkit-text-stroke: 0.5px black;
+}
+
+.temporary-bounce {
+  -webkit-animation-iteration-count: 2;
+  animation-iteration-count: 2;
+}
