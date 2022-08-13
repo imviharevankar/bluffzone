@@ -1,11 +1,11 @@
 import { SIGN_UP, SIGN_IN, SIGN_OUT, USER_LOADED } from "./types";
 import axios from "axios";
-import { url } from "../../api";
+import { BASE_URL } from "../../api";
 
 export const signup = (user) => {
   return (dispatch) => {
     axios
-      .post(`${url}/auth/signup`, user)
+      .post(`${BASE_URL}/auth/signup`, user)
       .then((response) => {
         localStorage.setItem("token", response?.data?.token);
         dispatch({
@@ -20,7 +20,7 @@ export const signup = (user) => {
 export const signin = (user) => {
   return (dispatch) => {
     axios
-      .post(`${url}/auth/signin`, user)
+      .post(`${BASE_URL}/auth/signin`, user)
       .then((response) => {
         localStorage.setItem("token", response?.data?.token);
         dispatch({
