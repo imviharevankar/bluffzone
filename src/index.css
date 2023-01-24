@@ -2,6 +2,13 @@
 @tailwind components;
 @tailwind utilities;
 
+.root,
+#root,
+#docs-root {
+  --primary-color: #fff;
+  --secondary-color: #000;
+}
+
 .gridCards {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
