@@ -5,7 +5,7 @@ import { BASE_URL } from "../../api";
 export const signup = (user) => {
   return (dispatch) => {
     axios
-      .post(`${BASE_URL}/auth/signup`, user)
+      .post(`${BASE_URL}/api/auth/signup`, user)
       .then((response) => {
         localStorage.setItem("token", response?.data?.token);
         dispatch({
@@ -20,7 +20,7 @@ export const signup = (user) => {
 export const signin = (user) => {
   return (dispatch) => {
     axios
-      .post(`${BASE_URL}/auth/signin`, user)
+      .post(`${BASE_URL}/api/auth/signin`, user)
       .then((response) => {
         localStorage.setItem("token", response?.data?.token);
         dispatch({

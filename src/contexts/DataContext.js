@@ -2,7 +2,7 @@ import { createContext, useContext, useState } from "react";
 
 const DataContext = createContext();
 
-export function useData() {
+export const useData = () => {
   return useContext(DataContext);
 }
 
