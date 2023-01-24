@@ -42,9 +42,6 @@ const MovieHome = () => {
       .get(url)
       .then((response) => {
         setLoaderModal(false);
-
-        console.log(response?.data?.results);
-
         setGenreMovieList(response?.data?.results);
       })
       .catch((err) => {
@@ -153,7 +150,7 @@ const MovieHome = () => {
         ))}
       </div>
       <div>
-        <p className="hover:underline px-2 text-xl text-indigo-400 my-2 cursor-pointer">
+        <p className="font-ubuntu hover:underline px-2 text-xl text-red-400 my-2 cursor-pointer">
           Now Playing
         </p>
         <div className="flex  overflow-x-scroll scrollbar-hide my-2 mx-2 space-x-10">
