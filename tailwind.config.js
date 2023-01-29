@@ -1,5 +1,3 @@
-const defaultTheme = require('tailwindcss/defaultTheme');
-
 module.exports = {
   mode: "jit",
   purge: ["./src/**/*.{js,jsx,ts,tsx}", "./public/index.html"],
@@ -10,9 +8,6 @@ module.exports = {
         "primary-color": "var(--primary-color)",
         "secondary-color": "var(--secondary-color)"
       },
-      fontFamily: {
-        ubuntu: ['"Ubuntu"', ...defaultTheme.fontFamily.sans]
-      }
     },
     screens: {
       xsm: { max: "480px" },

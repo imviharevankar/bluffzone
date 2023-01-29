@@ -9,6 +9,10 @@
   --secondary-color: #000;
 }
 
+body {
+  font-family: 'Ubuntu', sans-serif;
+}
+
 .gridCards {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
