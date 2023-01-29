@@ -1,14 +1,16 @@
 import axios from "axios";
-import React, { useEffect, useState } from "react";
-import MovieCard from "../components/MovieCard";
+import { useEffect, useState } from "react";
 import { useModal } from "../contexts/ModalContext";
+import { fetchNowPlayingMovies, fetchPopularMovies } from "../services/movies.services";
+import { resources } from "../utils/resources";
+import MovieCategoryCard from "./MovieCategoryCard";
 
 const MovieHome = () => {
   const API_KEY = process?.env?.REACT_APP_API_KEY;
-  const [nowPlaying, setNowPlaying] = useState([]);
-  const [popular, setPopular] = useState([]);
-  const [topRated, setTopRated] = useState([]);
-  const [upcoming, setUpcoming] = useState([]);
+  const [topRatedMovies, setTopRatedMovies] = useState([]);
+  const [nowPlayingMovies, setNowPlayingMovies] = useState([]);
+  const [popularMovies, setPopularMovies] = useState([]);
+  const [upcomingMovies, setUpcomingMovies] = useState([]);
   const [genreMovieList, setGenreMovieList] = useState([]);
   const [genres, setGenres] = useState([]);
 
@@ -29,7 +31,6 @@ const MovieHome = () => {
       })
       .catch((err) => {
         setLoaderModal(false);
-
         console.log(err?.message);
       });
   };
@@ -50,71 +51,62 @@ const MovieHome = () => {
       });
   };
 
-  const fetchNowPlaying = () => {
-    const url = `https://api.themoviedb.org/3/movie/now_playing?api_key=${API_KEY}&language=en-US&page=1&region=IN`;
+  const getNowPlayingMovies = async () => {
+    try {
+      const response = await fetchNowPlayingMovies();
+      if (response.status === 200) {
+        setNowPlayingMovies(response?.data?.results);
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  }
 
-    axios
-      .get(url)
-      .then((response) => {
-        // console.log(response?.data?.results);
-        setNowPlaying(response?.data?.results);
-      })
-      .catch((err) => {
-        console.log(err?.message);
-      });
-  };
+  const getTopRatedMovies = async () => {
+    try {
+      const response = await fetchNowPlayingMovies();
+      if (response.status === 200) {
+        setTopRatedMovies(response?.data?.results);
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  }
 
-  const fetchPopular = () => {
-    const url = `https://api.themoviedb.org/3/movie/popular?api_key=${API_KEY}&language=en-US&page=1&region=IN`;
+  const getPopularMovies = async () => {
+    try {
+      const response = await fetchPopularMovies();
+      if (response.status === 200) {
+        setPopularMovies(response?.data?.results);
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  }
 
-    axios
-      .get(url)
-      .then((response) => {
-        setPopular(response?.data?.results);
-      })
-      .catch((err) => {
-        console.log(err?.message);
-      });
-  };
-
-  const fetchTopRated = () => {
-    const url = `https://api.themoviedb.org/3/movie/now_playing?api_key=${API_KEY}&language=en-US&page=1&region=IN`;
-
-    axios
-      .get(url)
-      .then((response) => {
-        setTopRated(response?.data?.results);
-      })
-      .catch((err) => {
-        console.log(err?.message);
-      });
-  };
-
-  const fetchUpcoming = () => {
-    const url = `https://api.themoviedb.org/3/movie/upcoming?api_key=${API_KEY}&language=en-US&page=1&region=IN`;
-
-    axios
-      .get(url)
-      .then((response) => {
-        setUpcoming(response?.data?.results);
-      })
-      .catch((err) => {
-        console.log(err?.message);
-      });
-  };
+  const getUpcomingMovies = async () => {
+    try {
+      const response = await fetchNowPlayingMovies();
+      if (response.status === 200) {
+        setUpcomingMovies(response?.data?.results);
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  }
 
   const fetchData = () => {
     fetchGenres();
     fetchGenreList();
-    fetchNowPlaying();
-    fetchPopular();
-    fetchTopRated();
-    fetchUpcoming();
   };
 
   useEffect(() => {
     fetchData();
-  }, []); // eslint-disable-line react-hooks/exhaustive-deps
+    getNowPlayingMovies();
+    getTopRatedMovies();
+    getPopularMovies();
+    getUpcomingMovies();
+  }, []);
 
   return (
     <div>
@@ -135,92 +127,11 @@ const MovieHome = () => {
           </button>
         ))}
       </div>
-      <div className="flex overflow-x-scroll scrollbar-hide space-x-10 my-2 mx-2">
-        {genreMovieList?.map((item) => (
-          <MovieCard
-            id={item?.id}
-            img={item?.poster_path}
-            name={item?.title}
-            date={item?.release_date}
-            runtime={item?.runtime}
-            rating={item?.vote_average}
-            genres={item?.genres}
-            voteCount={item?.vote_count}
-          />
-        ))}
-      </div>
-      <div>
-        <p className="font-ubuntu hover:underline px-2 text-xl text-red-400 my-2 cursor-pointer">
-          Now Playing
-        </p>
-        <div className="flex  overflow-x-scroll scrollbar-hide my-2 mx-2 space-x-10">
-          {nowPlaying?.map((item) => (
-            <MovieCard
-              key={item?.imdb_id}
-              id={item?.id}
-              img={item?.poster_path}
-              name={item?.title}
-              date={item?.release_date}
-              runtime={item?.runtime}
-              rating={item?.vote_average}
-              voteCount={item?.vote_count}
-            />
-          ))}
-        </div>
-        <p className="hover:underline px-2 text-xl text-indigo-400 my-2 cursor-pointer">
-          Popular movies
-        </p>
-        <div className="flex overflow-x-scroll scrollbar-hide space-x-10 mx-2 my-2">
-          {popular?.map((item) => (
-            <MovieCard
-              key={item?.imdb_id}
-              id={item?.id}
-              img={item?.poster_path}
-              name={item?.title}
-              date={item?.release_date}
-              runtime={item?.runtime}
-              rating={item?.vote_average}
-              voteCount={item?.vote_count}
-            />
-          ))}
-        </div>
-
-        <p className="hover:underline px-2 text-xl text-indigo-400 my-2  cursor-pointer">
-          Top Rated Movies
-        </p>
-        <div className="flex overflow-x-scroll scrollbar-hide space-x-10 mx-2 my-2">
-          {topRated?.map((item) => (
-            <MovieCard
-              key={item?.imdb_id}
-              id={item?.id}
-              img={item?.poster_path}
-              name={item?.title}
-              date={item?.release_date}
-              runtime={item?.runtime}
-              rating={item?.vote_average}
-              voteCount={item?.vote_count}
-            />
-          ))}
-        </div>
-
-        <p className="hover:underline px-2 text-xl text-indigo-400 my-2 cursor-pointer">
-          Upcoming Movies
-        </p>
-        <div className="flex cursor-pointer overflow-x-scroll scrollbar-hide my-2 mx-2 space-x-10 pb-10">
-          {upcoming?.map((item) => (
-            <MovieCard
-              key={item?.imdb_id}
-              id={item?.id}
-              img={item?.poster_path}
-              name={item?.title}
-              date={item?.release_date}
-              runtime={item?.runtime}
-              rating={item?.vote_average}
-              voteCount={item?.vote_count}
-            />
-          ))}
-        </div>
-      </div>
+      <MovieCategoryCard title="" arr={genreMovieList} />
+      <MovieCategoryCard title={resources?.nowPlaying} arr={nowPlayingMovies} />
+      <MovieCategoryCard title={resources?.popularMovies} arr={popularMovies} />
+      <MovieCategoryCard title={resources?.topRatedMovies} arr={topRatedMovies} />
+      <MovieCategoryCard title={resources?.upcomingMovies} arr={upcomingMovies} />
     </div>
   );
 };
